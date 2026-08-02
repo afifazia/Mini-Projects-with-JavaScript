@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practice 😎✌</title>
+</head>
+<body>
+    <h1 id="heading">Hello World!</h1>
+    <p id="para">How are you!</p>
+    <button>Click Me!</button>
+
+    <script>
+        const heading = document.querySelector('#heading');
+        console.log(heading.textContent); //Read
+        heading.textContent = `Welcome Back!!`; //Update
+        console.log(heading.textContent);
+
+        const paragraph = document.querySelector('#para');
+        console.log(paragraph.textContent);
+        paragraph.textContent = `I'm fine!!`;
+        console.log(paragraph.textContent);
+
+        const btn = document.querySelector('button'); //get the 1st button element
+        console.log(btn.textContent);
+        btn.textContent = `Yayy!!`;
+        console.log(btn.textContent);
+    </script>
+</body>
+</html>

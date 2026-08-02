@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temperature Converter</title>
+</head>
+<body>
+    
+    <h1><span style="color: rgb(151, 28, 28);">Temperature</span> <span style="color: cadetblue;">Converter</span></h1>
+
+    <input type="number" id="convert-to-fahrenheit" placeholder="Convert to fahrenhiet..."
+    style="padding: 8px; border-radius: 6px; border: 1px solid gray;">
+
+    <button id="convert-btn"
+    style="padding: 8px; border-radius: 6px; border: 1px solid gray; cursor: pointer;"
+    >Convert</button> <br><br>
+
+    <p id="result">Results: </p>
+
+    <script>
+        const resultParagraph = document.querySelector('#result');
+        const userInput = document.querySelector('#convert-to-fahrenheit');
+
+        function convertToFahrenheit() {
+            randomColor();
+
+            const convertUserInput = userInput.value;
+            if (convertUserInput ===  '' || convertUserInput === '0') {
+                resultParagraph.textContent = `Please enter a temperature.`;
+                return;
+            }
+
+            const fahrenheit = Number((convertUserInput * 9 / 5) + 32);
+            resultParagraph.textContent = `Result: ${fahrenheit}°F`;
+        };
+        const convertButton = document.querySelector('#convert-btn');
+        convertButton.addEventListener('click', convertToFahrenheit);
+
+
+        function randomColor() {
+            const randomClr = '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
+            convertButton.style.backgroundColor = randomClr;
+        };
+
+        /* Math.floor() get's rid of the decimal numbers, Math.random() chooses a random number between 0 (inclusive) to 1 (exclusive) & when we multiply it with the exact 16777215 it chooses a number from between 1 to 16777215, toString(16) change the base 10 to base 16 adding letter's to get a random valid css color, padStart(6, '0') make's sure if the value isn't 6 digits, put 0's in the starting to make it into a 6 digit valid css color and # at the start is to make it a valid css color */
+    </script>
+</body>
+</html>

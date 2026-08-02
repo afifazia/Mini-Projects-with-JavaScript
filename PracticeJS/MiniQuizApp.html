@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Quiz App</title>
+</head>
+<body>
+    <h1>🧠 JavaScript Quiz</h1><br><br>
+    <p><b>1. What does HTML stands for?</b></p>
+
+    <input type="radio" name="quiz-one" value="HyperText Markup Language">
+    <label>HyperText Markup Language</label><br><br>
+
+    <input type="radio" name="quiz-one" value="Home Tool Markup Language">
+    <label>Home Tool Markup Language</label><br><br>
+
+    <input type="radio" name="quiz-one" value="Hyperlinks and Text Language">
+    <label>Hyperlinks and Text Language</label><br><br>
+
+    <p id="result" ><b>Result:</b></p>
+
+
+    <p><b>2. What does JSON stands for?</b></p>
+
+    <input type="radio" name="quiz-two" value="Java Syntax Ordered Nodes">
+    <label for="">Java Syntax Ordered Nodes</label><br><br>
+
+    <input type="radio" name="quiz-two" value="Java Standard Object Notation">
+    <label>Java Standard Object Notation</label><br><br>
+
+    <input type="radio" name="quiz-two" value="JavaScript Object Notation">
+    <label>JavaScript Object Notation</label><br><br>
+
+    <p id="result-two"><b>Result:</b></p>
+
+    <script>
+        
+        function quiz(correctAns, result, groupName) {
+            const resultParagraph = document.querySelector(result);
+            const radios = document.querySelectorAll(`input[name="${groupName}"]`);
+
+            for (const radio of radios) {
+            radio.addEventListener('click', () => {
+                if (radio.value === correctAns) {
+                    resultParagraph.textContent = `Result: ✅ Correct`;
+                }
+                else {
+                    resultParagraph.textContent = `Result: ❌ Wrong`;
+                };
+            });
+          };
+        };
+        quiz('HyperText Markup Language', '#result', 'quiz-one');
+        quiz('JavaScript Object Notation', '#result-two', 'quiz-two');
+
+    </script>
+</body>
+</html>

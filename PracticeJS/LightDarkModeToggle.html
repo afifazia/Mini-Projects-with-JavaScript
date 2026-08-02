@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <style>
+        body {
+            background-color: #eeb8d7;
+            color: black;
+        }
+
+        h1 {
+            background: linear-gradient(90deg, #5b105e, #737299, #8b5975);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        button {
+            padding: 8px;
+            border: 1px solid gray;
+            border-radius: 8px;
+            box-shadow: 2px 2px 6px #8b5975;
+        }
+        button:active {
+            translate: 2px 1px;
+        }
+
+        .dark-theme {
+            background-color: #2c2a2b;
+            color: white;
+        }
+    </style>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Light/Dark Mode Toggle</title>
+</head>
+<body>
+    
+    <h1 id="heading">Light/Dark Mode Toggle 🌙💡</h1>
+    <button id="toggle-theme">Toggle Theme</button>
+
+    <script>
+
+        const heading = document.querySelector('#heading');
+        const themeToggle = document.querySelector('#toggle-theme');
+
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-theme');
+            heading.classList.toggle('dark-theme');
+        });
+                
+        for(let i = 1; i <= 10; i++){
+            console.log(Math.floor(Math.random() * 10) + 1); //Now it's from 1 to 9 not 0 to 9
+        };
+    </script>
+</body>
+</html>

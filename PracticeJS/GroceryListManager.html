@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grocery List Manager</title>
+</head>
+<body>
+    
+<script>
+    const groceries = [];
+
+    function addGrocery(itemName, itemQuantity, itemPrice, bought) {
+        const grocery = {
+            name: itemName,
+            quantity: itemQuantity,
+            price: itemPrice,
+            isBought: bought
+        };
+        groceries.push(grocery);
+    };
+    addGrocery('Milk', 2, 180, true);
+    addGrocery('Eggs', 12, 320, true);
+    addGrocery('Bread', 1, 150, true);
+    addGrocery('Rice', 5, 900, false);
+    addGrocery('Chicken Breast', 1, 650, true);
+    addGrocery('Tomatoes', 3, 120, true);
+    addGrocery('Onions', 4, 100, true);
+    addGrocery('Potatoes', 5, 200, false);
+    addGrocery('Cooking Oil', 1, 550, true);
+    addGrocery('Sugar', 2, 210, false);
+    addGrocery('Salt', 1, 40, true);
+    addGrocery('Butter', 1, 380, true);
+    addGrocery('Cheese Slices', 1, 420, false);
+    addGrocery('Yogurt', 4, 280, true);
+    addGrocery('Apples', 6, 360, true);
+    addGrocery('Bananas', 12, 150, true);
+    addGrocery('Oranges', 6, 240, false);
+    addGrocery('Green Tea', 1, 300, false);
+    addGrocery('Coffee', 1, 750, true);
+    addGrocery('Cereal', 1, 480, false);
+    addGrocery('Pasta', 2, 220, true);
+
+
+    function showGrocery() {
+        let groceryCount = 1;
+        for (const grocery of groceries) {
+            console.log(`Grocery: ${groceryCount}`);
+            console.log(`Item Name: ${grocery.name}\nQuantity: ${grocery.quantity}\nPrice: $${grocery.price}\nBought: ${grocery.isBought}`);
+            groceryCount++;
+        };
+    };
+    showGrocery();
+
+
+    function countGroceryItems() {
+        console.log(`There are ${groceries.length} Groceries in total 🥙`);
+    };
+    countGroceryItems();
+
+
+    function boughtItems() {
+        console.log(`BOUGHT ITEMS:`);
+        for (const grocery of groceries) {
+            if (grocery.isBought === true) {
+                console.log(`Item Name: ${grocery.name}\nQuantity: ${grocery.quantity}\nPrice: $${grocery.price}\nBought: ${grocery.isBought}`);
+            };
+        };
+    };
+    boughtItems();
+
+
+    function unboughtItems() {
+        console.log(`UNBOUGHT ITEMS:`);
+        for (const grocery of groceries) {
+            if (grocery.isBought === false) {
+                console.log(`Item Name: ${grocery.name}\nQuantity: ${grocery.quantity}\nPrice: $${grocery.price}\nBought: ${grocery.isBought}`);
+            };
+        };
+    };
+    unboughtItems();
+
+
+    function findItem(item) {
+        if (typeof item !== 'string') {
+            console.log(`Error ⚠: Input not even a string!`);
+            return false;
+        };
+
+        const trimmed = item.trim(); //.trim() only exists on strings, that's why we check 1st if 
+        //user input is even a string or not. It removes white spaces from the very start & end
+        if (!/^[A-Za-z\s]+$/.test(trimmed)) {
+            console.log(`Error ⚠: Enter a valid name!`);
+            return false;
+        };
+
+        let isFound = false;
+        for (const grocery of groceries) {
+            if (grocery.name === item) {
+                isFound = true;
+                console.log(`ITEM FOUND!\nItem Name: ${grocery.name}\nQuantity: ${grocery.quantity}\nPrice: $${grocery.price}\nBought: ${grocery.isBought}`);
+                break;
+            };
+        };
+        if (!isFound) {
+                console.log(`Error ⚠: Item not found!`);
+        };
+    };
+    findItem('Milk');
+    findItem('ji')
+    findItem('45');
+    findItem('  ');
+    findItem('Cheese Slices');
+    findItem(null)
+
+
+    function mostExpensiveItem() {
+        let expensiveItem = 0;
+        let expensiveItemName = '';
+        for (const grocery of groceries) {
+            if (grocery.price > expensiveItem) {
+                expensiveItem = grocery.price;
+                expensiveItemName = grocery.name;
+            };
+        };
+        console.log(`The most expensive item is ${expensiveItemName} which is $${expensiveItem}`);
+    };
+    mostExpensiveItem();
+
+
+    function calculateGroceryBill() {
+        let itemsList = [];
+        let total = 0;
+        for (const grocery of groceries) {
+            const groceryTotal = grocery.price * grocery.quantity;
+            total += groceryTotal;
+            itemsList.push(`\nName: ${grocery.name}\nPrice: ${grocery.price}\nQuantity:${grocery.quantity}\n\nTotal: ${groceryTotal}\n`);
+        };
+        console.log(`Items & Quantities: ${itemsList}\n\nFINAL BILL: $${total}`);
+    };
+    calculateGroceryBill();
+</script>
+
+</body>
+</html>

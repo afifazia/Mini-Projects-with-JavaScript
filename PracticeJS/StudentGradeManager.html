@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Grade Manager</title>
+</head>
+<body>
+    
+    <script>
+        const studentsGrade = [];
+
+        function addStudents(name, marks, isPassed) {
+            const student = {
+            studentName: name,
+            studentMarks: marks,
+            studentPassed: isPassed
+            };
+            studentsGrade.push(student);
+        };
+       addStudents('Lucifer', 99, true);
+       addStudents('Azazil', 67, true);
+       addStudents('Lilith', 33, false);
+       addStudents('Khleesi', 88, true);
+
+       console.log(studentsGrade);
+
+
+       function showStudents() {
+        let studentCount = 1;
+        for (const student of studentsGrade) {
+            console.log(`Student ${studentCount} 📚`);
+            console.log(`Name: ${student.studentName}\nMarks: ${student.studentMarks}\nPassed: ${student.studentPassed}`);
+            studentCount++;
+        }
+       };
+       showStudents();
+
+       
+       function passedStudents() {
+        let countPassedStudents = 0;
+        const passedStudentsNames = [];
+
+        for (const student of studentsGrade) {
+            if(student.studentPassed === true) {
+                countPassedStudents++;
+                passedStudentsNames.push(student.studentName);
+            }
+         }
+         console.log(`Student Passed: ${countPassedStudents}\nNAMES:\n${passedStudentsNames.join('\n')}`);
+       }
+       /* .join() is an array method that turns an array into a single string, sticking a separator 
+       between each element. */
+       passedStudents();
+
+
+       function highestMarks() {
+        let highestStudentMarks = 0;
+        for(const student of studentsGrade) {
+            if (student.studentMarks > highestStudentMarks){
+                highestStudentMarks = student.studentMarks;
+                console.log(`Highest Marks From:\nName: ${student.studentName}\nMarks: ${student.studentMarks}`);
+            }
+          }
+        };
+        highestMarks();
+    </script>
+</body>
+</html>

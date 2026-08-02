@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacts Finder</title>
+</head>
+<body>
+    
+    <script>
+        const contacts = [];
+
+        function addContact(contactName, phoneNum, userCity) {
+            const contactsInfo = {
+                name: contactName,
+                phone: phoneNum,
+                city: userCity
+            };
+            contacts.push(contactsInfo);
+        };
+        addContact('Lucifer', '06789274508', 'Silverpine');
+        addContact('Liam O\'connor', '74602918745', 'Rosemont');
+        addContact('Lilith', '02347819075', 'Harmony Creek');
+        addContact('Wei Chen', '00078492647', 'Luoyang');
+        addContact('BeezleBub', '73648018733', 'Ashford Vale');
+
+
+        function showContacts() {
+            let contactCount = 1;
+            for(const contact of contacts) {
+                console.log(`Contact ${contactCount}\nName: ${contact.name}\nPhone: ${contact.phone}\nCity: ${contact.city}`);
+                contactCount++;
+            }
+        };
+        showContacts();
+
+
+        function findContact(Cname) {
+            if (Cname === '' || Cname === null) {
+                    console.log(`Write a valid name!`);
+                    return;
+            };
+
+            let isFound = false;
+            for(const contact of contacts) {
+                if (contact.name === Cname) {
+                    isFound = true;
+                    console.log(`Contact Found!`);
+                    console.log(`Name: ${contact.name}\nPhone: ${contact.phone}\nCity: ${contact.city}`);
+                    break;
+                };
+            };
+            
+            if (!isFound) {
+                    console.log(`Contact Not Found!`);
+            };
+        };
+        findContact('Lucif');
+        findContact('gone');
+        findContact('Wei Chen');
+        findContact('');
+
+
+        function countContacts() {
+            for(const contact of contacts) {
+                
+            };
+            console.log(`Total Contacts: ${contacts.length}`);
+        };
+        countContacts();
+    </script>
+</body>
+</html>

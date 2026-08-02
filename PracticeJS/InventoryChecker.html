@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Checker</title>
+</head>
+<body>
+    
+    <script>
+        const inventory = [];
+
+        function addProduct(name, price, productQuantity, isAvailable) {
+            const product = {
+                productName: name,
+                productPrice: price,
+                quantity: productQuantity,
+                inStock: isAvailable
+            }
+            inventory.push(product);
+        };
+        addProduct('Mouse', 2500, 16, true);
+        addProduct('Keyboard', 4500, 8, true);
+        addProduct('Monitor 24', 22000, 5, true);
+        addProduct('Laptop Stand', 3200, 15, true);
+        addProduct('USB-C Hub', 5800, 0, false);
+        addProduct('Webcam HD', 6700, 10, true);
+        addProduct('Bluetooth Speaker', 8900, 6, true);
+        addProduct('Wireless Earbuds', 12000, 0, false);
+        addProduct('Power Bank 20000mAh', 4200, 20, true);
+        addProduct('External SSD 1TB', 15500, 7, true);
+        addProduct('Graphics Tablet', 9800, 0, false);
+        addProduct('Car Phone Mount', 1500, 22, true);
+        addProduct('Microphone USB', 6500, 6, true);
+
+
+        function showProducts() {
+            for (const product of inventory) {
+                console.log(`Product Name: ${product.productName}\nPrice: ${product.productPrice}\nQuantity: ${product.quantity}\nIn Stock: ${product.inStock}`);
+            }
+        }
+        showProducts();
+
+
+        function countProducts() {
+            console.log(`There are ${inventory.length} products!`);
+        }
+        countProducts();
+
+
+        function productsInStock() {
+            let availableProducts = [];
+            for(const product of inventory) {
+                if (product.inStock === false) {
+                    continue;
+                }
+                availableProducts.push(product.productName);
+            }
+            console.log(`There are ${availableProducts.length} products available at the moment!
+            PRODUCTS IN STOCK:\n${availableProducts.join('\n')}`);
+
+        }
+        productsInStock();
+        //productsInStock();
+
+
+        function findProduct(Pname) {
+            if (typeof Pname !== 'string') {
+                console.log('Error ⚠: Not Even a String! 🧵');
+                return false;
+            }
+        /* Meaning if Pname is NOT a string !false = true, then trigger the error & end the function. */
+
+            const trimmed = Pname.trim();
+            if (!/^[A-Za-z\s]+$/.test(trimmed)){
+                console.log(`Error ⚠: Enter a Valid Name!`)
+                return false;
+            };
+
+            let productFound = false;
+            for (const product of inventory) {
+                if (Pname === product.productName) {
+                    productFound = true;
+                    console.log(`PRODUCT FOUND!\nName: ${product.productName}\nPrice: ${product.productPrice}\nQuantity: ${product.quantity}\nIn Stock: ${product.inStock}`);
+                    break;
+                };
+            };
+            if (!productFound) {
+                    console.log(`Product Not Found!`);
+            };
+        };
+        /* If trimmed (user Input) is all letters/spaces => .test() returns true
+           If trimmed (user Input) contains a number/symbol => .test() returns false
+        Read ! as a word NOT, so if NOT all letter's meaning contains symbol or number return !false
+        which means true & contain numbers/symbols so end the function.
+        return; (with nothing after it) stops the function and gives back undefined, basically
+        "nothing." 
+        return false; stops the function & gives back the actual boolean value false, which
+        the caller can then use. */
+        findProduct('Mouse');
+        findProduct('Wireless Earbuds');
+        findProduct('Hahaaaa');
+        findProduct('');
+        findProduct(89);
+        findProduct('356');
+
+
+        function findExpensiveProduct() {
+            let mostExpensiveItem = 0;
+            let expensiveItemName = '';
+            for (const product of inventory) {
+                if (product.productPrice > mostExpensiveItem) {
+                    mostExpensiveItem = product.productPrice;
+                    expensiveItemName = product.productName;
+                };
+            };
+            console.log(`The Most Expensive Item is ${expensiveItemName} which is $${mostExpensiveItem}`);
+        };
+        findExpensiveProduct();
+
+
+        function calculateTotal(itemName) {
+            if (typeof itemName !== 'string') {
+                console.log(`Error ⚠: Not Even a String! 🧵`);
+                return false;
+            };
+
+            let trimmed = itemName.trim();
+            if (!/^[A-Za-z\s]+$/.test(trimmed)) {
+                console.log(`Error ⚠: Enter a Valid Name!`);
+                return false;
+            };
+
+            for (const product of inventory) {
+                if (product.productName === trimmed) {
+                    console.log(`Product Name: ${product.productName}\nProduct Quantity: ${product.quantity}\nPrice: $${product.productPrice}\nTotal: $${product.quantity * product.productPrice}`);
+                };
+            };
+        };
+        calculateTotal('Mouse');
+        calculateTotal('78');
+        calculateTotal(99);
+        calculateTotal('Car Phone Mount');
+
+
+        function calculateInventory() {
+            let inventoryTotal = 0;
+            for (const product of inventory) {
+                const itemTotal = product.productPrice * product.quantity;
+                inventoryTotal += itemTotal;
+            };
+            console.log(`Total Inventory Value: $${inventoryTotal} 🤑💲`);
+        };
+        calculateInventory();
+
+    </script>
+</body>
+</html>

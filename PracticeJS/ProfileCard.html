@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Card</title>
+</head>
+<body>
+    <div class="card">
+        <h3 id="name"></h3>
+        <p id="age"></p>
+        <p id="learning"></p>
+        <p id="status"></p>
+        <p id="goal"></p>
+    </div>
+
+    <h2>HTML</h2>
+    <h2>CSS</h2>
+    <h2>JavaScript</h2>
+    
+    <script>
+        const nameHeading = document.querySelector('#name');
+        nameHeading.textContent = `Name: Lucifer`;
+
+        const age = document.querySelector('#age');
+        age.textContent = `Age: 19`;
+
+        const learning = document.querySelector('#learning');
+        learning.textContent = `Learning: JavaScript`;
+
+        const status = document.querySelector('#status');
+        status.textContent = `Status: Apprentice`;
+
+        const goal = document.querySelector('#goal');
+        goal.innerHTML = `Goal: <b>Become a MERN Developer</b>`;
+
+
+        const languages = document.querySelectorAll('h2');
+        for (const language of languages) {
+            language.textContent = `Completed ✅`;
+        };
+        console.log(languages)
+    </script>
+</body>
+</html>
