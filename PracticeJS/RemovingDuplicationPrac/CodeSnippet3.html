@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Snippet Three</title>
+</head>
+<body>
+    
+    <p id="apples-count">Apples: 0</p>
+    <button id="apples-btn">+1 Apple</button><br><br>
+
+    <p id="bananas-count">Bananas: 0</p>
+    <button id="bananas-btn">+1 Banana</button><br><br>
+
+    <p id="oranges-count">Oranges: 0</p>
+    <button id="oranges-btn">+1 Orange</button>
+
+<script>
+
+    function countFruits (fruitName, fruitsCount, fruitsBtn) {
+        let fruitsTotal = 0;
+        const fruitsParagraph = document.querySelector(fruitsCount);
+        const fruitsButton = document.querySelector(fruitsBtn);
+        fruitsButton.addEventListener('click', () => {
+            fruitsTotal += 1;
+            fruitsParagraph.textContent = `${fruitName}: ${fruitsTotal}`;
+        });
+    };
+    countFruits('Apple', '#apples-count', '#apples-btn');
+    countFruits('Bananas', '#bananas-count', '#bananas-btn');
+    countFruits('Oranges', '#oranges-count', '#oranges-btn');
+</script>
+</body>
+</html>

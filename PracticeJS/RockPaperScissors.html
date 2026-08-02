@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <style>
+        h1 {
+            background: linear-gradient(360deg, #e74cac, #605ceb, #632e4b);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        h3 {
+            background: linear-gradient(360deg, #274561, #e463b2);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: bolder;
+        }
+        button {
+            background-color: black;
+            color: white;
+            border-radius: 6px;
+            border: none;
+            padding: 10px;
+            margin-right: 6px;
+            transition: box-shadow 0.25s;
+            cursor: pointer;
+        }
+        button:hover{
+            box-shadow: 2px 2px 6px gray;
+        }
+    </style>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Paper Scissors</title>
+</head>
+<body>
+    
+    <h1>Rock Paper Scissors</h1>
+
+    <h3>Choose Your Move: </h3>
+    <button id="rock-btn">Rock ✊🏼</button>
+    <button id="paper-btn">Paper ✋🏼</button>
+    <button id="scissors-btn">Scissors ✌🏼</button> <br><br>
+
+    <p id="user-move-elem">Your Move:</p>
+    <p id="computers-move-elem">Computers Move:</p>
+    <p id="result-elem">Result:</p>
+
+    <script>
+        // Windows + semicolon = Emojis
+        const choices = ['Rock', 'Paper', 'Scissors'];
+
+        const userMove = document.querySelector('#user-move-elem');
+        const computerMove = document.querySelector('#computers-move-elem');
+        const resultParagraph = document.querySelector('#result-elem');
+        
+
+        const rockButton = document.querySelector('#rock-btn');
+        const paperButton = document.querySelector('#paper-btn');
+        const scissorsButton = document.querySelector('#scissors-btn');
+
+        function playGame (userChoice) {
+            const randomIndex = Math.floor(Math.random() * choices.length);
+            const computerChoice = choices[randomIndex];
+
+            userMove.textContent = `Your Move: ${userChoice}`;
+            computerMove.textContent = `Computers Move: ${computerChoice}`;
+
+            if (userChoice === computerChoice) {
+                resultParagraph.textContent = `Result: It's a Tie! 🤝🏼`;
+            } 
+            else if (
+            (userChoice === 'Rock' && computerChoice === 'Scissors') ||
+            (userChoice === 'Paper' && computerChoice === 'Rock') ||
+            (userChoice === 'Scissors' && computerChoice === 'Paper')) {
+                resultParagraph.textContent = `Result: You Won! 🎉`;
+            } 
+            else {
+                resultParagraph.textContent = `Result: You Lose! 😭`;
+            }
+        };
+        rockButton.addEventListener('click', () => playGame('Rock'));
+        paperButton.addEventListener('click', () => playGame('Paper'));
+        scissorsButton.addEventListener('click', () => playGame('Scissors'));
+    </script>
+</body>
+</html>

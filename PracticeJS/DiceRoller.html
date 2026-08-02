@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <style>
+        h1 {
+            background: linear-gradient(360deg, #e74cac, #4f4ae6, #632e4b);
+            background-clip: text;
+            color: transparent;
+        }
+        button {
+            background-color: black;
+            color: white;
+            border-radius: 6px;
+            border: none;
+            padding: 10px;
+            margin-right: 6px;
+            transition: box-shadow 0.25s;
+            cursor: pointer;
+        }
+        button:hover{
+            box-shadow: 2px 2px 6px gray;
+        }
+        button:active{
+            translate: 1px 1px;
+        }
+    </style>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dice Roller</title>
+</head>
+<body>
+    
+    <h1>Dice Roller</h1>
+
+    <button id="roll-dice">Roll Dice 🎲</button>
+    <h3 id="result">Result: 🎲</h3>
+
+    <script>
+
+        const resultHeading = document.querySelector('#result');
+        const rollDiceBtn = document.querySelector('#roll-dice');
+
+        rollDiceBtn.addEventListener('click', () => {
+            const randomNum = Math.floor(Math.random() * 6) + 1;
+            resultHeading.textContent = `Result: 🎲 ${randomNum}`;
+
+            const randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
+            rollDiceBtn.style.backgroundColor = randomColor;
+        });
+    </script>
+</body>
+</html>

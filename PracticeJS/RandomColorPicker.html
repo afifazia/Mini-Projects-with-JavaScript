@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <style>
+        h1 {
+            background: linear-gradient(180deg, rgb(72, 16, 204), black);
+            background-clip: text;
+            color: transparent;
+        }
+        button {
+            border-radius: 6px;
+            border: none;
+            padding: 10px;
+            margin-right: 6px;
+            transition: box-shadow 0.25s;
+            cursor: pointer;
+        }
+        button:hover{
+            box-shadow: 2px 2px 6px gray;
+        }
+        button:active{
+            translate: 1px 1px;
+        }
+
+        .color-box-styling {
+            height: 120px;
+            width: 120px;
+            border: 2px solid black;
+        }
+    </style>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Picker</title>
+</head>
+<body>
+    <h1>Random Color Picker 🎨</h1>
+
+    <div id="random-color-box" class="color-box-styling"></div>
+    <p id="result-color">Current Color: White</p>
+    <button id="generate-color-btn">Generate Color</button>
+
+    <script>
+
+        const randomColorBox = document.querySelector('#random-color-box');
+        const resultParagraph = document.querySelector('#result-color');
+        const generateColorBtn = document.querySelector('#generate-color-btn');
+
+        generateColorBtn.addEventListener('click', () => {
+            const randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
+            randomColorBox.style.backgroundColor = randomColor;
+            resultParagraph.textContent = `Current Color\'s Hex Code: ${randomColor}`;
+            generateColorBtn.style.backgroundColor = randomColor;
+        });
+    </script>
+</body>
+</html>

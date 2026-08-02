@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <style>
+        h1 {
+            background: linear-gradient(90deg, #ec4dad, #6663ce, #632e4b);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        button {
+            background-color: black;
+            color: white;
+            border-radius: 6px;
+            border: none;
+            padding: 10px;
+            margin-right: 6px;
+            transition: box-shadow 0.25s;
+            cursor: pointer;
+        }
+        button:hover{
+            box-shadow: 2px 2px 6px gray;
+        }
+    </style>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Score Keeper</title>
+</head>
+<body>
+    <h1>Mini Score Keeper 🎼💯</h1>
+
+    <p id="teamA-score">Team A: 0</p>
+    <p id="teamB-score">Team B: 0</p>
+
+    <button id="team-a-btn">+1 Team A</button>
+    <button id="team-b-btn">+1 Team B</button> <br><br>
+    <button id="reset-btn" style="margin-left: 50px;">Reset</button>
+
+    <script>
+        let teamAScore = 0;
+        let teamBScore = 0;
+
+        const teamAparagraph = document.querySelector('#teamA-score');
+        const teamBparagraph = document.querySelector('#teamB-score');
+
+        function increaseScoreA() {
+            teamAScore += 1;
+            updateScoreA();
+        };
+        const teamAbutton = document.querySelector('#team-a-btn');
+        teamAbutton.addEventListener('click', increaseScoreA);
+
+        function increaseScoreB() {
+            teamBScore += 1;
+            updateScoreB();
+        };
+        const teamBbutton = document.querySelector('#team-b-btn');
+        teamBbutton.addEventListener('click', increaseScoreB);
+
+        function resetScore() {
+            teamAScore = 0;
+            updateScoreA();
+            teamBScore = 0;
+            updateScoreB();
+        };
+        const resetScoreBothTeam = document.querySelector('#reset-btn');
+        resetScoreBothTeam.addEventListener('click', resetScore);
+
+        function updateScoreA() {
+            teamAparagraph.textContent = `Team A: ${teamAScore}`;
+        };
+        function updateScoreB() {
+            teamBparagraph.textContent = `Team B: ${teamBScore}`;
+        };
+    </script>
+</body>
+</html>

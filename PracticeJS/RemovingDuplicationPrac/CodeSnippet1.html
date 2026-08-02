@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Snippet One</title>
+</head>
+<body>
+    
+    <button id="btn-ali">Greet Ali</button>
+    <button id="btn-sara">Greet Sara</button>
+    <button id="btn-zain">Greet Zain</button>
+    <p id="greeting-output"></p>
+
+    <script>
+
+    function greetingCards(whichButton, names) {
+        const output = document.querySelector('#greeting-output');
+        const buttons = document.querySelector(`${whichButton}`);
+
+        buttons.addEventListener('click', () => {
+        output.textContent = `Hello, ${names}! Hope you're having a great day.`;
+      });
+    };
+
+    greetingCards('#btn-ali', 'Ali');
+    greetingCards('#btn-sara', 'Sara')
+    greetingCards('#btn-zain', 'Zain');
+    </script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Character Counter</title>
+</head>
+<body>
+    
+    <h1><span style="color: darkblue;">Live</span> <span style="color: darkslateblue">Character</span> <span style="color: darkslategrey">Counter</span></h1>
+
+    <input id="text-input" type="text" placeholder="Type something..."
+    style="padding: 8px; border-radius: 6px; border: 1px solid gray;"> <br><br>
+
+    <p id="counter"> Characters: 0 </p>
+
+    <script>
+        const counterParagraph = document.querySelector('#counter');
+
+        function countCharacters() {
+            const trimmed = countUserInput.value.trim();
+
+            counterParagraph.textContent = `Characters: ${trimmed.length}`;
+        }
+        const countUserInput = document.querySelector('#text-input');
+        countUserInput.addEventListener('input', countCharacters);
+    </script>
+</body>
+</html>

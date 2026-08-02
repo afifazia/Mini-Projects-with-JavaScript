@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <style>
+        .welcome-heading-css {
+            color: darkslategray;
+        }
+    </style>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Live Welcome App </title>
+</head>
+<body>
+
+    <h1 id="welcome-heading" class="welcome-heading-css">Welcome, Stranger!</h1>
+
+    <input type="text" placeholder="Enter your name..." id="user-input"
+    style="padding: 8px; border-radius: 6px; border: 1px solid gray;">
+
+    <script>
+        const welcomeHeading = document.querySelector('#welcome-heading');
+
+        function updateName() {
+            const trimmed = userInput.value.trim();
+            if (trimmed === '') {
+                welcomeHeading.textContent = `Welcome, Stranger!`;
+                return;
+            };
+
+            welcomeHeading.textContent = `Welcome, ${trimmed}!`;
+        };
+        const userInput = document.querySelector('#user-input');
+        userInput.addEventListener('input', updateName);
+
+    </script>
+</body>
+</html>

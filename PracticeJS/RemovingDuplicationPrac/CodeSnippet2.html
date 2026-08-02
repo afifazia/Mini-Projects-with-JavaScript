@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Snippet Two</title>
+</head>
+<body>
+
+    <input type="text" id="name-input" placeholder="Enter your name">
+    <button id="check-name">Check Name</button>
+    <p id="name-result"></p><br>
+
+    <input type="text" id="city-input" placeholder="Enter your city">
+    <button id="check-city">Check City</button>
+    <p id="city-result"></p>
+
+    
+    <script>
+
+    function testing(nameCityInput, checkNameCity, nameCityResult) {
+        const input = document.querySelector(`${nameCityInput}`);
+        const result = document.querySelector(`${nameCityResult}`);
+        const checkBtn = document.querySelector(`${checkNameCity}`);
+
+        checkBtn.addEventListener('click', () => {
+            const trimmed = input.value.trim();
+            if (!/^[A-Za-z\s]+$/.test(trimmed)) {
+                result.textContent = `❌ Invalid`;
+            } else {
+                result.textContent = `✅ Looks good`;
+            }
+        });
+    };
+    testing('#name-input', '#check-name', '#name-result');
+    testing('#city-input', '#check-city', '#city-result');
+
+    </script>
+</body>
+</html>
