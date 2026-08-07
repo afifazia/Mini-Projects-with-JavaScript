@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <style>
+        h1 {
+            background: linear-gradient(360deg, black, rgb(151, 6, 235));
+            background-clip: text;
+            color: transparent;
+        }
+
+        .user-input-styling {
+            padding: 10px;
+            border: 1px solid gray;
+            border-radius: 6px;
+        }
+        .task-btn-styling {
+            background: linear-gradient(180deg, rgb(111, 12, 136), rgb(241, 86, 203));
+            padding: 11px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: box-shadow 0.15s;
+        }
+        .task-btn-styling:hover {
+            box-shadow: 3px 3px 8px rgb(54, 54, 54);
+        }
+        .task-btn-styling:active {
+            translate: 1px 1px;
+        }
+    </style>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToDo List</title>
+</head>
+<body>
+    <h1>Interactive ToDo List</h1> <br><br>
+
+    <input type="text" placeholder="Type a task..." id="user-input" class="user-input-styling">
+    <button id="add-task-btn" class="task-btn-styling">Add Task</button>
+    <p id="error-para" style="color: rgb(194, 6, 6);"></p>
+    <ul id="ul-list"></ul>
+
+    <script>
+        const tasks = [];
+
+        const userInput = document.querySelector('#user-input');
+        const addTaskButton = document.querySelector('#add-task-btn');
+        const errorParagraph = document.querySelector('#error-para');
+        const ulList = document.querySelector('#ul-list');
+
+        function toDoList() {
+            if (userInput.value.trim() === '') {
+                errorParagraph.textContent = `Error ⚠: Empty Input`;
+                return;
+            };
+            errorParagraph.textContent = '';
+            
+            const userInputValue = userInput.value;
+            tasks.push(userInputValue);
+
+            ulList.innerHTML = '';
+
+            for (const task of tasks) {
+                const userTasks = document.createElement('li');
+                userTasks.textContent = `${task}`;
+                ulList.append(userTasks);
+            };
+            userInput.value = '';
+        };
+        addTaskButton.addEventListener('click', toDoList);
+
+    </script>
+</body>
+</html>

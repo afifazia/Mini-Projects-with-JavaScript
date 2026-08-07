@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <style>
+        h1 {
+            background: linear-gradient(360deg,#a955ee, #442134);
+            background-clip: text;
+            color: transparent;
+        }
+        button {
+            background: linear-gradient(180deg, rgb(33, 29, 34), rgb(241, 86, 203));
+            padding: 11px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: box-shadow 0.15s;
+        }
+        button:hover {
+            box-shadow: 3px 3px 8px rgb(54, 54, 54);
+        }
+        button:active {
+            translate: 1px 1px;
+        }
+        
+    </style>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>createElement Practice</title>
+</head>
+<body>
+    <h1>createElement Practice</h1>
+
+    <button id="add-message">Add Message</button>
+    <ul id="list"></ul>
+
+    <script>
+        const addButton = document.querySelector('#add-message');
+        const ulList = document.querySelector('#list');
+
+        function addMessage() {
+            const messageList = document.createElement('li');
+            messageList.textContent = `Hello Apprentice! 😎`;
+            ulList.append(messageList);
+        };
+        addButton.addEventListener('click', addMessage);
+    </script>
+</body>
+</html>
