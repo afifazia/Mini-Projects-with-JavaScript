@@ -63,7 +63,9 @@
         cursor: pointer;
       }
       button:hover {
-        box-shadow: 2px 2px 10px #363636;
+        box-shadow:
+          0 0 8px #240ea0,
+          0 0 12px #3e0863;
       }
       button:active {
         translate: 1px 1px;
@@ -85,7 +87,7 @@
         margin-left: 8px;
       }
 
-      .search-movies-style {
+      .search-series-style {
         border-radius: 60px;
         padding: 16px;
         font-size: 16px;
@@ -94,88 +96,103 @@
 
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Movie Watchlist</title>
+    <title>Series Watchlist</title>
   </head>
   <body>
-    <h1>Movie Watchlist</h1>
-    <a href="SeriesWatchlist.html">Click to View Series Watchlist ➡</a>
-    <br /><br /><br /><br />
+    <h1>Series Watchlist</h1>
+    <br />
+    <a href="MovieWatchlist.html"> ⬅ Go Back</a> <br /><br /><br /><br />
 
-    <label for="movie-name">Movie Title:</label>
+    <label for="series-name">Series Title:</label>
     <input
       type="text"
-      placeholder="Type a movie..."
-      id="movie-name"
+      placeholder="Type a series..."
+      id="series-name"
       maxlength="100"
     />
     <br /><br />
 
-    <label for="movie-genre">Movie Genre:</label>
+    <label for="series-genre">Series Genre:</label>
     <input
       type="text"
       placeholder="Type the genre..."
-      id="movie-genre"
+      id="series-genre"
       maxlength="100"
     />
     <br /><br />
 
-    <label for="movie-rating">Movie Rating:</label>
+    <label for="series-rating">Series Rating:</label>
     <input
       type="text"
       placeholder="Type the rating..."
-      id="movie-rating"
+      id="series-rating"
       maxlength="4"
     />
     <br /><br />
 
-    <label for="year">Movie Year:</label>
-    <input type="text" placeholder="Type the year..." id="year" maxlength="4" />
+    <label for="series-year">Series Year:</label>
+    <input
+      type="text"
+      placeholder="Type the year..."
+      id="series-year"
+      maxlength="4"
+    />
     <br /><br />
 
-    <button id="add-movie-btn">Add Movie</button> <br /><br /><br /><br />
+    <label for="series-seasons">Number of Seasons:</label>
+    <input
+      type="text"
+      placeholder="Type the seasons..."
+      id="series-seasons"
+      maxlength="4"
+    />
+    <br /><br />
+
+    <button id="add-series-btn">Add Series</button> <br /><br /><br /><br />
 
     <input
       type="text"
-      placeholder="Search for movies..."
-      id="search-movies"
-      class="search-movies-style"
+      id="search-series"
+      class="search-series-style"
+      placeholder="Search your series..."
     />
-    <br /><br />
 
     <p id="error-para"></p>
     <div id="display"></div>
 
     <script>
-      const searchMovie = document.querySelector("#search-movies");
-      const movies = JSON.parse(localStorage.getItem("movies")) || [];
+      const searchSeries = document.querySelector("#search-series");
+      const seriesList = JSON.parse(localStorage.getItem("seriesList")) || [];
 
-      const movieName = document.querySelector("#movie-name");
-      const movieGenre = document.querySelector("#movie-genre");
-      const movieRating = document.querySelector("#movie-rating");
-      const movieYear = document.querySelector("#year");
+      const seriesName = document.querySelector("#series-name");
+      const seriesGenre = document.querySelector("#series-genre");
+      const seriesRating = document.querySelector("#series-rating");
+      const seriesYear = document.querySelector("#series-year");
+      const seriesSeasons = document.querySelector("#series-seasons");
 
       const errorParagraph = document.querySelector("#error-para");
 
-      const addMovieBtn = document.querySelector("#add-movie-btn");
-      const displayMovies = document.querySelector("#display");
+      const addSeriesBtn = document.querySelector("#add-series-btn");
+      const displaySeries = document.querySelector("#display");
 
-      function searchMovieFunc() {
-        const searchInput = searchMovie.value.trim();
-        const search = movies.filter((searchMovieName) => {
-          return searchMovieName.name
+      function searchSeriesFunc() {
+        const searchInput = searchSeries.value.trim();
+        const search = seriesList.filter((searchSeriesName) => {
+          return searchSeriesName.name
             .toLowerCase()
             .includes(searchInput.toLowerCase());
         });
-        renderMovies(search);
+        renderSeries(search);
       }
-      searchMovie.addEventListener("input", searchMovieFunc);
+      searchSeries.addEventListener("input", searchSeriesFunc);
 
-      function movieWatchlist() {
+      function seriesWatchlist() {
         if (
-          movieName.value.trim() === "" ||
-          movieGenre.value.trim() === "" ||
-          movieRating.value.trim() === "" ||
-          movieYear.value.trim() === ""
+          seriesName.value.trim() === "" ||
+          seriesGenre.value.trim() === "" ||
+          seriesRating.value.trim() === "" ||
+          seriesYear.value.trim() === "" ||
+          seriesSeasons.value.trim() === ""
         ) {
           errorParagraph.textContent = `Error: Please Enter a Value to Proceed!`;
           errorParagraph.style.color = `red`;
@@ -183,40 +200,41 @@
         }
         errorParagraph.textContent = "";
 
-        movies.unshift({
-          name: movieName.value.trim(),
-          genre: movieGenre.value.trim(),
-          rating: movieRating.value.trim(),
-          year: movieYear.value.trim(),
+        seriesList.unshift({
+          name: seriesName.value.trim(),
+          genre: seriesGenre.value.trim(),
+          rating: seriesRating.value.trim(),
+          year: seriesYear.value.trim(),
+          seasons: seriesSeasons.value.trim(),
           status: "Watch Later",
         });
         updateUI();
       }
-      addMovieBtn.addEventListener("click", movieWatchlist);
+      addSeriesBtn.addEventListener("click", seriesWatchlist);
 
-      function renderMovies(movieList = movies) {
-        displayMovies.innerHTML = ``;
+      function renderSeries(list = seriesList) {
+        displaySeries.innerHTML = ``;
 
-        for (const movie of movieList) {
+        for (const series of list) {
           let statusColor;
-          if (movie.status === "Watch Later") {
+          if (series.status === "Watch Later") {
             statusColor = `red`;
-          } else if (movie.status === "Coming Soon!") {
+          } else if (series.status === "Coming Soon!") {
             statusColor = `#f156cb`;
           } else {
             statusColor = `green`;
           }
           const paragraph = document.createElement("p");
           paragraph.innerHTML = `
-                <b>Title:</b> ${movie.name}\n<b>Genre:</b> ${movie.genre}\n<b>Rating:</b> ${movie.rating}\n<b>Year:</b> ${movie.year}\n<b>Status:</b> <span style="color: ${statusColor};">${movie.status}</span>\n\n`;
+                <b>Title:</b> ${series.name}\n<b>Genre:</b> ${series.genre}\n<b>Rating:</b> ${series.rating}\n<b>Year:</b> ${series.year}\n<b>Seasons:</b> ${series.seasons}\n<b>Status:</b> <span style="color: ${statusColor};">${series.status}</span>\n\n`;
 
           const deleteBtn = document.createElement("button");
           deleteBtn.textContent = `Delete`;
           deleteBtn.classList.add("delete-btn");
 
           deleteBtn.addEventListener("click", () => {
-            const movieIndex = movies.indexOf(movie);
-            movies.splice(movieIndex, 1);
+            const seriesIndex = seriesList.indexOf(series);
+            seriesList.splice(seriesIndex, 1);
             updateUI();
           });
 
@@ -226,39 +244,45 @@
 
           editBtn.addEventListener("click", () => {
             paragraph.innerHTML = `
-                    <b>Movie Title</b> <input type="text" maxlength="100" class="edit-title" value="${movie.name}"><br>
-                    <b>Movie Genre</b> <input type="text" maxlength="100" class="edit-genre" value="${movie.genre}"><br>
-                    <b>Movie Rating</b> <input type="text" maxlength="5" class="edit-rating" value="${movie.rating}"><br>
-                    <b>Movie Year</b> <input type="text" maxlength="4" class="edit-year" value="${movie.year}"><br>`;
+                    <b>Series Title</b> <input type="text" maxlength="100" class="edit-title" value="${series.name}"><br>
+                    <b>Series Genre</b> <input type="text" maxlength="100" class="edit-genre" value="${series.genre}"><br>
+                    <b>Series Rating</b> <input type="text" maxlength="5" class="edit-rating" value="${series.rating}"><br>
+                    <b>Series Year</b> <input type="text" maxlength="4" class="edit-year" value="${series.year}"><br>
+                    <b>Seasons</b> <input type="text" maxlength="4" class="edit-seasons" value="${series.seasons}"><br>`;
 
             const saveChangesBtn = document.createElement("button");
             saveChangesBtn.textContent = `Save Changes`;
             saveChangesBtn.classList.add("save-btn");
 
             saveChangesBtn.addEventListener("click", () => {
-              const updatedMovieTitle = paragraph
+              const updatedSeriesTitle = paragraph
                 .querySelector(".edit-title")
                 .value.trim();
-              const updatedMovieGenre = paragraph
+              const updatedSeriesGenre = paragraph
                 .querySelector(".edit-genre")
                 .value.trim();
-              const updatedMovieRating = paragraph
+              const updatedSeriesRating = paragraph
                 .querySelector(".edit-rating")
                 .value.trim();
-              const updatedMovieYear = paragraph
+              const updatedSeriesYear = paragraph
                 .querySelector(".edit-year")
+                .value.trim();
+              const updatedSeriesSeasons = paragraph
+                .querySelector(".edit-seasons")
                 .value.trim();
 
               if (
-                updatedMovieTitle &&
-                updatedMovieGenre &&
-                updatedMovieRating &&
-                updatedMovieYear
+                updatedSeriesTitle &&
+                updatedSeriesGenre &&
+                updatedSeriesRating &&
+                updatedSeriesYear &&
+                updatedSeriesSeasons
               ) {
-                movie.name = updatedMovieTitle;
-                movie.genre = updatedMovieGenre;
-                movie.rating = updatedMovieRating;
-                movie.year = updatedMovieYear;
+                series.name = updatedSeriesTitle;
+                series.genre = updatedSeriesGenre;
+                series.rating = updatedSeriesRating;
+                series.year = updatedSeriesYear;
+                series.seasons = updatedSeriesSeasons;
 
                 errorParagraph.textContent = "";
                 updateUI();
@@ -275,41 +299,42 @@
           statusBtn.classList.add("status-btn");
 
           statusBtn.addEventListener("click", () => {
-            if (movie.status === "Watch Later") {
-              movie.status = "Watched";
-            } else if (movie.status === "Watched") {
-              movie.status = "Coming Soon!";
+            if (series.status === "Watch Later") {
+              series.status = "Watched";
+            } else if (series.status === "Watched") {
+              series.status = "Coming Soon!";
             } else {
-              movie.status = "Watch Later";
+              series.status = "Watch Later";
             }
             updateUI();
           });
 
           const divider = document.createElement("hr");
-          displayMovies.append(divider);
+          displaySeries.append(divider);
 
-          displayMovies.append(paragraph);
+          displaySeries.append(paragraph);
           paragraph.append(deleteBtn);
           paragraph.append(editBtn);
           paragraph.append(statusBtn);
         }
 
-        movieName.value = "";
-        movieGenre.value = "";
-        movieRating.value = "";
-        movieYear.value = "";
+        seriesName.value = "";
+        seriesGenre.value = "";
+        seriesRating.value = "";
+        seriesYear.value = "";
+        seriesSeasons.value = "";
       }
 
-      function saveMovies() {
-        localStorage.setItem("movies", JSON.stringify(movies));
+      function saveSeries() {
+        localStorage.setItem("seriesList", JSON.stringify(seriesList));
       }
 
       function updateUI() {
-        saveMovies();
-        renderMovies();
+        saveSeries();
+        renderSeries();
       }
 
-      renderMovies(); //Page loads, Immediately render/show what's already saved.
+      renderSeries(); //Page loads, Immediately render/show what's already saved.
     </script>
   </body>
 </html>
