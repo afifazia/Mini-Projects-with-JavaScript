@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+
+        body {
+            font-family: 'Courier New', monospace;
+            background-color: #0d0221;
+            background-image: 
+                linear-gradient(#00ffff0d 1px, transparent 1px),
+                linear-gradient(90deg, #00ff4c0d 1px, transparent 1px);
+            background-size: 60px 60px;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: #00fff5;
+            font-size: 60px;
+            text-align: center;
+            text-shadow: 0 0 8px #00fff5, 0 0 20px #ff00c8, 0 0 35px #ff00c866;
+        }
+
+        label {
+            color: #00fff5;
+            font-size: 14px;
+            letter-spacing: 2px;
+            text-shadow: 0 0 4px #00fff599;
+        }
+
+        input {
+            font-family: 'Courier New', monospace;
+            width: 100%;
+            max-width: 320px;
+            padding: 14px;
+            background-color: #0d0221cc;
+            border: 1px solid #ff00c8;
+            border-radius: 4px;
+            color: #00fff5;
+            font-size: 14px;
+            outline: none;
+            box-shadow: 0 0 8px #ff00c866, inset 0 0 8px #ff00c81a;
+            transition: all 0.25s ease;
+        }
+        input::placeholder {
+            color: #00fff559;
+        }
+        input:focus {
+            border-color: #00fff5;
+            box-shadow: 0 0 15px #00fff5cc, inset 0 0 10px #00fff533;
+        }
+        input:hover {
+            border-color: #ff00c8;
+            box-shadow: 0 0 12px #00fff5;
+        }
+
+        button {
+            font-family: 'Courier New', monospace;
+            background-color: transparent;
+            border: 1px solid #00fff5;
+            border-radius: 4px;
+            color: #00fff5;
+            font-size: 16px;
+            padding: 12px;
+            cursor: pointer;
+            outline: none;
+            box-shadow: 0 0 8px #00fff566, inset 0 0 8px #00fff51a;
+            transition: all 0.25s ease;
+        }
+        button:hover {
+            background-color: #00fff51a;
+            border-color: #ff00c8;
+            color: #ff00c8;
+            box-shadow: 0 0 15px #ff00c8b3, inset 0 0 10px #ff00c833;
+        }
+        button:active {
+            transform: scale(0.96);
+            box-shadow: 0 0 6px #ff00c880;
+        }
+
+        #display-container p {
+            font-family: 'Courier New', monospace;
+            white-space: pre-line;
+            color: #00fff5;
+            width: 500px;
+            word-wrap: break-word;
+            word-break: break-word;
+        }
+
+        .edit-btn-style {
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
+        .search-bar-styling {
+            font-family: 'Courier New', monospace;
+            width: 100%;
+            max-width: 400px;
+            padding: 14px 18px 14px 40px;
+            background-color: #0d0221cc;
+            border: 1px solid #00fff5;
+            border-radius: 50px;
+            color: #00fff5;
+            font-size: 14\6px;
+            outline: none;
+            box-shadow: 0 0 8px #00fff566, inset 0 0 8px #00fff51a;
+            transition: all 0.25s ease;
+        }
+        .search-bar-styling::placeholder {
+            color: #ff00c8;
+            font-size: 16px;
+        }
+        .search-bar-styling:focus {
+            border-color: #ff00c8;
+            box-shadow: 0 0 15px #ff00c8cc, inset 0 0 10px #ff00c833;
+        }
+        .search-bar-styling:hover {
+            box-shadow: 0 0 12px #00fff5b3, inset 0 0 8px #00fff533;
+        }
+
+        .sort-label {
+            font-size: 16px;
+        }
+        .salary-style {
+            padding: 14px;
+        }
+    </style>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Application Tracker</title>
+</head>
+<body>
+    <h1>Job Application Tracker</h1>
+    <p id="error-paragraph"></p>
+
+    <label for="company-input">COMPANY:</label> 
+    <input type="text" placeholder="Company..." id="company-input" maxlength="100" title="Enter the name of the company you applied to"> <br><br>
+
+    <label for="role-input">ROLE:</label> 
+    <input type="text" placeholder="Role..." id="role-input" maxlength="100" title="Enter the role or position you applied for"> <br><br>
+
+    <label for="location-input">LOCATION:</label>
+    <input type="text" placeholder="Location..." id="location-input" maxlength="60" title="Enter the job location (Hybrid, Remote or Onsite)"> <br><br>
+
+    <label for="salaryRange-input">SALARY RANGE:</label>
+    <input type="text" placeholder="Salary Range..." id="salaryRange-input" maxlength="40" title="Enter the expected or offered salary range"> <br><br>
+
+    <label for="date-input">DATE APPLIED:</label>
+    <input type="date" id="date-input" title="Select a date on which you applied for this job"> <br><br>
+
+    <button id="add-application" title="Save this application to your tracker">Add Application</button> <br><br><br><br>
+
+    <input type="text" placeholder="Search by companies..." id="search-bar" maxlength="100" class="search-bar-styling" title="Type a company name to filter your applications"> <br><br><br>
+
+    <label class="sort-label">Sort By:</label>
+    <button title="Sort by date" id="sort-by-date">🗓 Date</button>
+    <button title="Sort by company" id="sort-by-company">🖨 Company</button>
+    <button title="Sort by salary" id="sort-by-salary" class="salary-style">$ Salary</button>
+
+    <div id="display-container"></div>
+
+    <script>
+        const errorParagraph = document.querySelector('#error-paragraph');
+
+        const jobApplications = JSON.parse(localStorage.getItem('jobApplications')) || [];
+
+        const companyInput = document.querySelector('#company-input');
+        const roleInput = document.querySelector('#role-input');
+        const locationInput = document.querySelector('#location-input');
+        const salaryInput = document.querySelector('#salaryRange-input');
+        const dateInput = document.querySelector('#date-input');
+
+        const addBtn = document.querySelector('#add-application');
+
+        const searchBar = document.querySelector('#search-bar');
+
+        const sortByDateBtn = document.querySelector('#sort-by-date');
+        const sortByCompanyBtn = document.querySelector('#sort-by-company');
+        const sortBySalaryBtn = document.querySelector('#sort-by-salary');
+
+        const displayApplications = document.querySelector('#display-container');
+
+
+        function searchBarFilter() {
+            const searchText = searchBar.value.trim();
+            const searchFilter = jobApplications.filter((text) => {
+                return text.company.toLowerCase().includes(searchText.toLowerCase());
+            });
+            renderApplication(searchFilter);
+        };
+        searchBar.addEventListener('input', searchBarFilter);
+
+
+        sortByDateBtn.addEventListener('click', () => {
+            const sortedDateApplications = [...jobApplications].sort((a, b) => {
+                return new Date(a.date) - new Date(b.date);
+            });
+            renderApplication(sortedDateApplications);
+        });
+
+        sortByCompanyBtn.addEventListener('click', () => {
+            const sortedCompanyApplications = [...jobApplications].sort((a, b) => {
+                return a.company.localeCompare(b.company);
+            });
+            renderApplication(sortedCompanyApplications);
+        });
+
+        sortBySalaryBtn.addEventListener('click', () => {
+            const sortedSalaryApplications = [...jobApplications].sort((a, b) => {
+                return a.salary
+            });
+            renderApplication(sortedSalaryApplications);
+        });
+
+
+        function jobApplicationTracker() {
+            if (companyInput.value.trim() === '' ||
+            roleInput.value.trim() === '' ||
+            locationInput.value.trim() === '' ||
+            dateInput.value.trim() === '') {
+                showError();
+                return;
+            };
+            errorParagraph.textContent = '';
+
+            if (salaryInput.value.trim() === '') {
+                salaryInput.value = 'Not Disclosed';
+            };
+
+            jobApplications.unshift({
+                company: companyInput.value.trim(),
+                role: roleInput.value.trim(),
+                location: locationInput.value.trim(),
+                status: 'Applied',
+                salary: salaryInput.value.trim(),
+                date: dateInput.value.trim()
+            });
+
+            companyInput.value = '';
+            roleInput.value = '';
+            locationInput.value = '';
+            salaryInput.value = '';
+            dateInput.value = '';
+
+            updateUI();
+        };
+        addBtn.addEventListener('click', jobApplicationTracker);
+        
+
+        function renderApplication(applicationList = jobApplications) {
+            displayApplications.innerHTML = ``;
+
+            for (const application of applicationList) {
+                const displayParagraph = document.createElement('p');
+
+                displayParagraph.innerHTML = `<b>Company:</b> ${application.company}\n<b>Role:</b> ${application.role}\n<b>Location:</b> ${application.location}\n<b>Status:</b> <span style="color: #ff00c8;">${application.status}</span>\n<b>Salary:</b> ${application.salary}\n<b>Date:</b> ${application.date} <br><br>`;
+
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = `Delete`;
+                deleteButton.classList.add('delete-btn');
+
+                deleteButton.addEventListener('click', () => {
+                    const confirmDelete = confirm('Delete this application? This action cannot be undone.');
+                    if (confirmDelete) {
+                        const deleteByIndex = jobApplications.indexOf(application);
+                        jobApplications.splice(deleteByIndex, 1);
+                        updateUI();
+                    }
+                });
+
+                const editButton = document.createElement('button');
+                editButton.textContent = `Edit`;
+                editButton.classList.add('edit-btn-style');
+                editButton.addEventListener('click', () => {
+                    displayParagraph.innerHTML = `COMPANY: <input type="text" placeholder="Company..." class="edit-company-input" value="${application.company}" maxlength="400">
+
+                    ROLE: <input type="text" placeholder="Job Title..." class="edit-role-input" value="${application.role}" maxlength="400">
+
+                    LOCATION: <input type="text" placeholder="Location..." class="edit-location-input" value="${application.location}" maxlength="400">
+
+                    SALARY: <input type="text" placeholder="Salary Range..." class="edit-salary-input" value="${application.salary}" maxlength="40">
+
+                    DATE: <input type="date" class="edit-date-input" value="${application.date}"><br><br>`;
+
+
+                    const saveButton = document.createElement('button');
+                    saveButton.textContent = `Save Changes`;
+                    saveButton.addEventListener('click', () => {
+                        const updatedCompanyInp = displayParagraph.querySelector('.edit-company-input').value.trim();
+                        const updatedRoleInp = displayParagraph.querySelector('.edit-role-input').value.trim();
+                        const updatedLocationInp = displayParagraph.querySelector('.edit-location-input').value.trim();
+                        const updatedSalaryInp = displayParagraph.querySelector('.edit-salary-input').value.trim();
+                        const updatedDateInp = displayParagraph.querySelector('.edit-date-input').value.trim();
+
+                        if (updatedCompanyInp && updatedRoleInp && updatedLocationInp &&         updatedSalaryInp && updatedDateInp) {
+
+                                application.company = updatedCompanyInp;
+                                application.role = updatedRoleInp;
+                                application.location = updatedLocationInp;
+                                application.salary = updatedSalaryInp;
+                                application.date = updatedDateInp;
+
+                                errorParagraph.textContent = '';
+                                updateUI();
+
+                            } else {
+                                showError();
+                            };
+                    });
+
+                    const goBackButton = document.createElement('button');
+                    goBackButton.textContent = 'Go Back';
+                    goBackButton.style.marginLeft = '10px';
+                    goBackButton.addEventListener('click', () => {
+                        updateUI();
+                    });
+
+                    displayParagraph.append(saveButton);
+                    displayParagraph.append(goBackButton);
+                });
+
+                const statusButton = document.createElement('button');
+                statusButton.textContent = `Status`;
+                statusButton.addEventListener('click', () => {
+                    if (application.status === 'Applied') {
+                        application.status = 'Interview';
+                    } 
+                    else if (application.status === 'Interview') {
+                        application.status = 'Offer';
+                    }
+                    else if (application.status === 'Offer') {
+                        application.status = 'Rejected';
+                    }
+                    else if (application.status === 'Rejected') {
+                        application.status = 'Withdrawn';
+                    } else {
+                        application.status = 'Applied';
+                    };
+                    updateUI();
+                });
+
+                displayApplications.append(displayParagraph);
+                displayParagraph.append(deleteButton);
+                displayParagraph.append(editButton);
+                displayParagraph.append(statusButton);
+            };
+        };
+
+        function showError() {
+            errorParagraph.textContent = `Error: Please enter a value to proceed!`;
+            errorParagraph.style.color = `#ff003c`;
+            errorParagraph.style.textShadow = `0 0 6px #ff003cb3`;
+        };
+
+        function updateUI() {
+            renderApplication();
+            localStorage.setItem('jobApplications', JSON.stringify(jobApplications));
+        };
+        updateUI();
+    </script>
+</body>
+</html>

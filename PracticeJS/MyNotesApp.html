@@ -1,209 +1,270 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-
+  <head>
     <style>
-        h1 {
-            background: linear-gradient(180deg, #fd03c7, #260a45);
-            background-clip: text;
-            color: transparent;
-        }
+      h1 {
+        background: linear-gradient(180deg, #fd03c7, #260a45);
+        background-clip: text;
+        color: transparent;
+      }
 
-        input {
-            padding: 12px;
-            border-radius: 8px;
-            border: 2px solid transparent;
-            background: linear-gradient(white, white) padding-box,
-            linear-gradient(40deg, #fd02aa, #8102f8, #014ff8, #155815);
-            font-weight: bold;
-            transition: box-shadow 0.15s;
-        }
-        input:focus {
-            box-shadow: 0 0 12px #7873f5;
-            outline: none;
-        }
+      input {
+        padding: 12px;
+        border-radius: 8px;
+        border: 2px solid transparent;
+        background:
+          linear-gradient(white, white) padding-box,
+          linear-gradient(40deg, #fd02aa, #8102f8, #014ff8, #155815);
+        font-weight: bold;
+        transition: box-shadow 0.15s;
+      }
+      input:focus {
+        box-shadow: 0 0 12px #7873f5;
+        outline: none;
+      }
 
-        #notes-container p {
-            width: 500px;
-            word-wrap: break-word;
-            word-break: break-word;
-        }
+      #notes-container p {
+        width: 500px;
+        word-wrap: break-word;
+        word-break: break-word;
+      }
 
-        button {
-            margin-left: 15px;
-            border: none;
-            border-radius: 10% 90% 35% 71% / 60% 25% 82% 45%;
-            background: linear-gradient(120deg, #0d0221, #260a45, #7b2ff7, #260a45, #ff2ee6,
-            #0d0221);
-            color: white;
-            font-weight: bold;
-            padding: 14px 22px;
-            cursor: pointer;
-            transition: transform 0.4s;
+      button {
+        margin-left: 15px;
+        border: none;
+        border-radius: 10% 90% 35% 71% / 60% 25% 82% 45%;
+        background: linear-gradient(
+          120deg,
+          #0d0221,
+          #260a45,
+          #7b2ff7,
+          #260a45,
+          #ff2ee6,
+          #0d0221
+        );
+        color: white;
+        font-weight: bold;
+        padding: 14px 22px;
+        cursor: pointer;
+        transition: transform 0.4s;
+      }
+      button:hover {
+        transform: scale(1.1) rotate(6deg);
+        box-shadow:
+          0 0 18px #b43cff99,
+          0 0 26px #00e0ff59;
+      }
+
+      .style-search-notes {
+        border-radius: 60px;
+        border: 3px solid transparent;
+        background:
+          linear-gradient(black, black) padding-box,
+          linear-gradient(90deg, #00fff2, #ff00e6, #ae00ff) border-box;
+        background-size:
+          100% 100%,
+          300% 100%;
+        animation:
+          border-flow 4s linear infinite,
+          pulse-glow 2.5s ease-in-out infinite;
+        color: #00fff2;
+        font-weight: bold;
+        padding: 18px;
+        outline: none;
+        box-shadow:
+          0 0 6px #06968e99,
+          inset 0 0 8px #ff00e633;
+        transition: box-shadow 0.3s ease;
+      }
+
+      .style-search-notes::placeholder {
+        color: #00fff299;
+      }
+
+      @keyframes border-flow {
+        0% {
+          background-position:
+            0% 0%,
+            0% 50%;
         }
-        button:hover {
-            transform: scale(1.1) rotate(6deg);
-            box-shadow: 0 0 18px #b43cff99, 0 0 26px #00e0ff59;
+        100% {
+          background-position:
+            0% 0%,
+            300% 50%;
         }
-        
-        .style-search-notes {
-            border-radius: 60px;
+      }
+
+      @keyframes pulse-glow {
+        0%,
+        100% {
+          filter: brightness(1);
         }
+        50% {
+          filter: brightness(1.25);
+        }
+      }
     </style>
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>My Notes App</title>
-</head>
-<body>
+  </head>
+  <body>
     <h1>My Notes App</h1>
 
-    <input type="text" id="search-notes" class="style-search-notes" placeholder="Search for notes..."> <br><br><br><br><br>
+    <input
+      type="text"
+      id="search-notes"
+      class="style-search-notes"
+      placeholder="Search for notes..."
+    />
+    <br /><br /><br /><br /><br />
 
-    <input type="text" placeholder="Type your note..." id="user-note-input" maxlength="700">
-    <button id="add-notes-btn">Add Notes</button> <br><br><br><br>
+    <input
+      type="text"
+      placeholder="Type your note..."
+      id="user-note-input"
+      maxlength="700"
+    />
+    <button id="add-notes-btn">Add Notes</button> <br /><br /><br /><br />
 
     <b><p id="error-paragraph"></p></b>
 
     <div id="notes-container"></div>
 
     <script>
-        const searchNotes = document.querySelector('#search-notes');
+      const searchNotes = document.querySelector("#search-notes");
 
-        const notes = JSON.parse(localStorage.getItem('notes')) || [];
+      const notes = JSON.parse(localStorage.getItem("notes")) || [];
 
-        const userInput = document.querySelector('#user-note-input');
-        const addNotesBtn = document.querySelector('#add-notes-btn');
+      const userInput = document.querySelector("#user-note-input");
+      const addNotesBtn = document.querySelector("#add-notes-btn");
 
-        const errorParagraph = document.querySelector('#error-paragraph');
-
-        const container = document.querySelector('#notes-container');
-
-
-        function searchNotesFunc() {
-                const search = searchNotes.value.trim();
-                const searchFilter = notes.filter((textNote) => {
-                return textNote.text.toLowerCase().includes(search.toLowerCase());
-            });
-            renderNotes(searchFilter);
-        };
-        searchNotes.addEventListener('input', searchNotesFunc);
+      const errorParagraph = document.querySelector("#error-paragraph");
+      const container = document.querySelector("#notes-container");
 
 
-        function noteApp() {
-            if (userInput.value.trim() === '') {
-                showError();
-                return;
-            };
-            errorParagraph.textContent = ``;
+      function searchNotesFunc() {
+        const search = searchNotes.value.trim();
+        const searchFilter = notes.filter((textNote) => {
+          return textNote.text.toLowerCase().includes(search.toLowerCase());
+        });
+        renderNotes(searchFilter);
+      }
+      searchNotes.addEventListener("input", searchNotesFunc);
 
-            notes.unshift({
-                text: userInput.value.trim(),
-                pinned: false
-            });
-            userInput.value = '';
+      function noteApp() {
+        if (userInput.value.trim() === "") {
+          showError();
+          return;
+        }
+        errorParagraph.textContent = ``;
 
-            updateUI()
-        };
-        addNotesBtn.addEventListener('click', noteApp);
+        notes.unshift({
+          text: userInput.value.trim(),
+          pinned: false,
+        });
+        userInput.value = '';
+        updateUI();
+      }
+      addNotesBtn.addEventListener("click", noteApp);
 
+      userInput.addEventListener("keydown", (pressEnter) => {
+        if (pressEnter.key === "Enter") {
+          noteApp();
+        }
+      });
 
-        userInput.addEventListener('keydown', (pressEnter) => {
-            if (pressEnter.key === 'Enter') {
-                noteApp();
-            };
+      function togglePinState(note) {
+        note.pinned = !note.pinned;
+        updateUI();
+      }
+
+      //function funcName (parameterName = fallbackValue)
+      function renderNotes(list = notes) {
+        container.innerHTML = ``;
+
+        const sortedNotes = [...list].sort((a, b) => {
+          return b.pinned - a.pinned;
         });
 
-        function togglePinState(note) {
-            note.pinned = !note.pinned;
-            updateUI();
-        };
+        for (const note of sortedNotes) {
+          const displayParagraph = document.createElement("p");
+          displayParagraph.innerHTML = `📜 ${note.text} <br><br>`;
 
-        //function funcName (parameterName = fallbackValue)
-        function renderNotes(list = notes) {
-            container.innerHTML = ``;
+          const pinBtn = document.createElement("button");
+          pinBtn.textContent = note.pinned ? "Unpin 📌" : "Pin 📌"; // Windows + ; = Emojis
 
-            const sortedNotes = [...list].sort((a, b) => {
-                return b.pinned - a.pinned;
+          // a first → return negative
+          // b first → return positive
+          // same order → return 0
+          pinBtn.addEventListener("click", () => {
+            togglePinState(note);
+          });
+
+          const editBtn = document.createElement("button");
+          editBtn.textContent = `Edit`;
+
+          editBtn.addEventListener("click", () => {
+            displayParagraph.innerHTML = `📜 <input type="text" placeholder="Type your note..." value="${note.text}" class="edit-input" maxlength="700"> <br><br>`;
+
+            const saveBtn = document.createElement("button");
+            saveBtn.textContent = `Save Changes`;
+
+            saveBtn.addEventListener("click", () => {
+              const updatedInput = document
+                .querySelector(".edit-input")
+                .value.trim();
+
+              if (updatedInput !== "") {
+                note.text = updatedInput;
+                errorParagraph.textContent = "";
+                updateUI();
+
+              } else {
+                showError();
+              }
             });
+            displayParagraph.append(saveBtn);
+          });
 
-            for (const note of sortedNotes) {
-                const displayParagraph = document.createElement('p'); 
-                displayParagraph.innerHTML = `📜 ${note.text} <br><br>`;
+          const deleteBtn = document.createElement("button");
+          deleteBtn.textContent = `Delete`;
 
-                const pinBtn = document.createElement('button');
-                pinBtn.textContent = `Pin`;
-                pinBtn.textContent = note.pinned ? 'Unpin 📌' : 'Pin 📌'; //Windows + ; = Emojis
+          deleteBtn.addEventListener("click", () => {
+            //confirm() is a JS built in function that returns boolean, Ok = true, Cancel = false
+            const wantTodelete = confirm(
+              "Are you sure you want to delete this note?",
+            );
 
-                // a first → return negative 
-                // b first → return positive 
-                // same order → return 0
-                pinBtn.addEventListener('click', () => {
-                        togglePinState(note);
-                });
+            if (wantTodelete) {
+              //checks if true or false
+              const deleteByIndex = notes.indexOf(note);
+              notes.splice(deleteByIndex, 1);
+              updateUI();
+            }
+          });
 
-                const editBtn = document.createElement('button');
-                editBtn.textContent = `Edit`;
+          container.append(displayParagraph);
+          displayParagraph.append(editBtn);
+          displayParagraph.append(deleteBtn);
+          displayParagraph.append(pinBtn);
 
-                editBtn.addEventListener('click', () => {
-                    displayParagraph.innerHTML = `📜 <input type="text" placeholder="Type your note..." value="${note.text}" class="edit-input" maxlength="700"> <br><br>`;
-
-                    const saveBtn = document.createElement('button');
-                    saveBtn.textContent = `Save Changes`;
-
-                    saveBtn.addEventListener('click', () => {
-                        const updatedInput = document.querySelector('.edit-input').value.trim();
-
-                        if (updatedInput !== '') {
-                            note.text = updatedInput;
-                            errorParagraph.textContent = '';
-
-                            updateUI()
-                        } 
-                        else {
-                            showError();
-                        };
-                    });  
-                    displayParagraph.append(saveBtn);
-                });
-
-                const deleteBtn = document.createElement('button');
-                deleteBtn.textContent = `Delete`;
-
-                deleteBtn.addEventListener('click', () => {
-                    //confirm() is a JS built in function that returns boolean, Ok = true, Cancel = false
-                    const wantTodelete = confirm('Are you sure you want to delete this note?');
-
-                    if (wantTodelete) { //checks if true or false
-                        const deleteByIndex = notes.indexOf(note);
-                        notes.splice(deleteByIndex, 1);
-
-                        updateUI()
-                    };
-                });
-
-                container.append(displayParagraph);
-                displayParagraph.append(editBtn);
-                displayParagraph.append(deleteBtn);
-                displayParagraph.append(pinBtn);
-
-                const divider = document.createElement('hr');
-                container.append(divider);
-            };
-        };
-
-        function showError() {
-            errorParagraph.textContent = `Error! Please Write a Note to Proceed.`;
-            errorParagraph.style.color = `red`;
-        };
-
-        function updateUI() {
-            localStorage.setItem('notes', JSON.stringify(notes));
-            renderNotes();
+          const divider = document.createElement("hr");
+          container.append(divider);
         }
+      }
 
-        updateUI();
+      function showError() {
+        errorParagraph.textContent = `Error! Write a Note to Proceed.`;
+        errorParagraph.style.color = `red`;
+      }
+
+      function updateUI() {
+        localStorage.setItem("notes", JSON.stringify(notes));
+        renderNotes();
+      }
+      updateUI();
     </script>
-    
-</body>
+  </body>
 </html>
