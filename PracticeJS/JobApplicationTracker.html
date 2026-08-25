@@ -86,8 +86,23 @@
             word-break: break-word;
         }
 
-        .edit-btn-style {
-            margin-left: 10px;
+        .delete-btn {
+            color: #ff0055;
+            text-shadow: 0 0 4px #bd0832, 0 0 12px #ff003cb3;
+        }
+        .edit-btn {
+            color: #9ffa17; 
+            text-shadow: 0 0 4px #7ec512, 0 0 12px #b4f84ecc;
+        }
+        .status-btn {
+            color: #4df1fd;
+            text-shadow: 0 0 4px #00f0ff, 0 0 12px #00f0ffcc;
+        }
+        .delete-btn,
+        .edit-btn,
+        .status-btn {
+            font-weight: bold;
+            text-transform: uppercase;
             margin-right: 10px;
         }
 
@@ -100,7 +115,7 @@
             border: 1px solid #00fff5;
             border-radius: 50px;
             color: #00fff5;
-            font-size: 14\6px;
+            font-size: 14px;
             outline: none;
             box-shadow: 0 0 8px #00fff566, inset 0 0 8px #00fff51a;
             transition: all 0.25s ease;
@@ -160,9 +175,8 @@
     <div id="display-container"></div>
 
     <script>
-        const errorParagraph = document.querySelector('#error-paragraph');
-
         const jobApplications = JSON.parse(localStorage.getItem('jobApplications')) || [];
+        const errorParagraph = document.querySelector('#error-paragraph');
 
         const companyInput = document.querySelector('#company-input');
         const roleInput = document.querySelector('#role-input');
@@ -181,6 +195,7 @@
         const displayApplications = document.querySelector('#display-container');
 
 
+        //SEARCH BAR
         function searchBarFilter() {
             const searchText = searchBar.value.trim();
             const searchFilter = jobApplications.filter((text) => {
@@ -191,28 +206,59 @@
         searchBar.addEventListener('input', searchBarFilter);
 
 
+        //SORTING & TOGGLE
+        let dateAscending = true;
         sortByDateBtn.addEventListener('click', () => {
-            const sortedDateApplications = [...jobApplications].sort((a, b) => {
-                return new Date(a.date) - new Date(b.date);
-            });
-            renderApplication(sortedDateApplications);
+            if (dateAscending) {
+                const sortedDateApplications = [...jobApplications].sort((a, b) => {
+                    return new Date(a.date) - new Date(b.date);
+                });
+                renderApplication(sortedDateApplications);
+            } 
+            else {
+                renderApplication(jobApplications);
+            };
+            dateAscending = !dateAscending;
         });
 
+        let companyAscending = true;
         sortByCompanyBtn.addEventListener('click', () => {
+            if (companyAscending) {
             const sortedCompanyApplications = [...jobApplications].sort((a, b) => {
-                return a.company.localeCompare(b.company);
-            });
-            renderApplication(sortedCompanyApplications);
+                    return a.company.localeCompare(b.company);
+                });
+                renderApplication(sortedCompanyApplications);
+            }
+            else {
+                renderApplication(jobApplications);
+            };
+            companyAscending = !companyAscending;
         });
 
+        let salaryDescending = true;
         sortBySalaryBtn.addEventListener('click', () => {
+            if (salaryDescending) {
             const sortedSalaryApplications = [...jobApplications].sort((a, b) => {
-                return a.salary
-            });
-            renderApplication(sortedSalaryApplications);
+                    return getSalaryValue(b.salary) - getSalaryValue(a.salary);
+                });
+                renderApplication(sortedSalaryApplications);
+            }
+            else {
+                renderApplication(jobApplications);
+            };
+            salaryDescending = !salaryDescending;
         });
+        function getSalaryValue(value) {
+            if (value.includes('Not Disclosed')) {
+                return - 1;
+            }
+            const cleanValue = value.replace(/,/g, '');
+            const match = cleanValue.match(/\d+/g);
+            return match ? parseInt(match[0]) : -1;
+        };
+        
 
-
+        //VALIDATE & PUSH INTO ARRAY
         function jobApplicationTracker() {
             if (companyInput.value.trim() === '' ||
             roleInput.value.trim() === '' ||
@@ -247,13 +293,18 @@
         addBtn.addEventListener('click', jobApplicationTracker);
         
 
+        //RENDER APPLICATIONS
         function renderApplication(applicationList = jobApplications) {
             displayApplications.innerHTML = ``;
 
             for (const application of applicationList) {
+                let salaryColor;
+                if (application.salary === 'Not Disclosed') {
+                    salaryColor = 'red';
+                }
                 const displayParagraph = document.createElement('p');
 
-                displayParagraph.innerHTML = `<b>Company:</b> ${application.company}\n<b>Role:</b> ${application.role}\n<b>Location:</b> ${application.location}\n<b>Status:</b> <span style="color: #ff00c8;">${application.status}</span>\n<b>Salary:</b> ${application.salary}\n<b>Date:</b> ${application.date} <br><br>`;
+                displayParagraph.innerHTML = `<b>Company:</b> ${application.company}\n<b>Role:</b> ${application.role}\n<b>Location:</b> ${application.location}\n<b>Status:</b> <span style="color: #ff00c8;">${application.status}</span>\n<b>Salary Range:</b> <span style="color: ${salaryColor}">${application.salary}</span>\n<b>Date:</b> ${application.date} <br><br>`;
 
                 const deleteButton = document.createElement('button');
                 deleteButton.textContent = `Delete`;
@@ -270,7 +321,7 @@
 
                 const editButton = document.createElement('button');
                 editButton.textContent = `Edit`;
-                editButton.classList.add('edit-btn-style');
+                editButton.classList.add('edit-btn');
                 editButton.addEventListener('click', () => {
                     displayParagraph.innerHTML = `COMPANY: <input type="text" placeholder="Company..." class="edit-company-input" value="${application.company}" maxlength="400">
 
@@ -289,11 +340,10 @@
                         const updatedCompanyInp = displayParagraph.querySelector('.edit-company-input').value.trim();
                         const updatedRoleInp = displayParagraph.querySelector('.edit-role-input').value.trim();
                         const updatedLocationInp = displayParagraph.querySelector('.edit-location-input').value.trim();
-                        const updatedSalaryInp = displayParagraph.querySelector('.edit-salary-input').value.trim();
+                        let updatedSalaryInp = displayParagraph.querySelector('.edit-salary-input').value.trim();
                         const updatedDateInp = displayParagraph.querySelector('.edit-date-input').value.trim();
 
-                        if (updatedCompanyInp && updatedRoleInp && updatedLocationInp &&         updatedSalaryInp && updatedDateInp) {
-
+                        if (updatedCompanyInp && updatedRoleInp && updatedLocationInp && updatedSalaryInp && updatedDateInp) {
                                 application.company = updatedCompanyInp;
                                 application.role = updatedRoleInp;
                                 application.location = updatedLocationInp;
@@ -303,9 +353,15 @@
                                 errorParagraph.textContent = '';
                                 updateUI();
 
-                            } else {
+                        } 
+                        else if (updatedSalaryInp === '') {
+                            updatedSalaryInp = 'Not Disclosed';
+                            updateUI();
+                        }
+                        else {
                                 showError();
-                            };
+                        };
+
                     });
 
                     const goBackButton = document.createElement('button');
@@ -321,6 +377,7 @@
 
                 const statusButton = document.createElement('button');
                 statusButton.textContent = `Status`;
+                statusButton.classList.add('status-btn');
                 statusButton.addEventListener('click', () => {
                     if (application.status === 'Applied') {
                         application.status = 'Interview';
@@ -347,7 +404,7 @@
         };
 
         function showError() {
-            errorParagraph.textContent = `Error: Please enter a value to proceed!`;
+            errorParagraph.textContent = `Error: Enter a value to proceed!`;
             errorParagraph.style.color = `#ff003c`;
             errorParagraph.style.textShadow = `0 0 6px #ff003cb3`;
         };

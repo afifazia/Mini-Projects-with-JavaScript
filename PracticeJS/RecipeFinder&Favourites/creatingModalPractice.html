@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        button {
+            background-color: #401b7e;
+            border-radius: 6px;
+            border: none;
+            color: white;
+            padding: 14px;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        button:hover {
+            box-shadow: 1px 1px 6px #4d3870;
+            padding: 16px;
+        }
+        
+        .modal-container {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            background-color: gainsboro;
+            border-radius: 6px;
+            height: 100vh;
+            width: 100vw;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+        .modal-container.show {
+            display: flex;
+        }
+
+        .modal {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 16px;
+            width: 600px;
+            max-width: 100%;
+            border-radius: 6px;
+            background-color: #6a4d99;
+        }
+        
+    </style>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creating Modal</title>
+</head>
+<body>
+    
+    <button id="click-me-btn">Click Me!</button>
+
+    <div class="modal-container">
+        <div class="modal">
+            <h1>Modals 😎✌🏼</h1>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis veritatis fugiat assumenda voluptas velit accusantium ad! Deserunt dignissimos illum dolorem dolorum enim fugiat, recusandae, voluptatum adipisci iste quidem velit omnis.
+            </p>
+            <button id="close-btn">Close</button>
+        </div>
+    </div>
+
+    <script>
+        const clickButton = document.querySelector("#click-me-btn");
+        const closeButton = document.querySelector("#close-btn");
+        const modalContainer = document.querySelector(".modal-container");
+
+        clickButton.addEventListener('click', () => {
+            modalContainer.classList.add('show');
+        });
+
+        closeButton.addEventListener('click', () => {
+            modalContainer.classList.remove('show');
+        });
+    </script>
+</body>
+</html>
